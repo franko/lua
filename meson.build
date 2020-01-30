@@ -9,7 +9,11 @@ lua_cflags = []
 lua_dll_cflags = []
 
 if host_machine.system() == 'linux'
-    lua_deps += dependency('readline')
+    readline = cc.find_library('readline')
+    if not readline.found()
+        error('readline library not found')
+    endif
+    lua_deps += readline
     lua_cflags += '-DLUA_USE_LINUX'
     lua_dll_name = 'lua'
     lua_dll_prefix = []
