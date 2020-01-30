@@ -16,7 +16,7 @@ if host_machine.system() == 'linux'
     lua_deps += readline
     lua_cflags += '-DLUA_USE_LINUX'
     lua_dll_name = 'lua'
-    lua_dll_prefix = []
+    lua_dll_prefix = 'lib'
 elif host_machine.system() == 'windows'
     lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
     lua_dll_name = 'lua51'
