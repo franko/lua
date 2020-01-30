@@ -1,23 +1,33 @@
 project('lua', 'c', version: '5.1.5', default_options : ['c_std=c89'])
 
+lua_version_suffix = '51'
+
 cc = meson.get_compiler('c')
 
 lua_deps = []
 lua_cflags = []
 lua_dll_cflags = []
+
 if host_machine.system() == 'linux'
     lua_deps += dependency('readline')
     lua_cflags += '-DLUA_USE_LINUX'
+    lua_dll_name = 'lua'
+    lua_dll_prefix = []
 elif host_machine.system() == 'windows'
-    if get_option('default_library') != 'static'
-        lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
-    endif
+    lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
+    lua_dll_name = 'lua51'
+    lua_dll_prefix = ''
 endif
 
 lua_deps += cc.find_library('m', required : false)
 lua_deps += cc.find_library('dl', required : false)
 
-# agg_includes = include_directories('include')
-# install_subdir('include', install_dir : 'include/agg2', strip_directory : true)
+install_headers(
+    'src/lua.h',
+    'src/luaconf.h',
+    'src/lualib.h',
+    'src/lauxlib.h',
+    'etc/lua.hpp',
+)
 
 subdir('src')

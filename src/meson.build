@@ -12,15 +12,17 @@ lua_lib_src = [
 lua_src = ['lua.c']
 luac_src = ['luac.c', 'print.c']
 
-liblua = both_libraries('lua',
+liblua = both_libraries(lua_dll_name,
     lua_core_src + lua_lib_src,
     c_args: lua_cflags + lua_dll_cflags,
+    name_prefix: lua_dll_prefix,
     install: true,
 )
+liblua_static = liblua.get_static_lib()
 
 lua = executable('lua',
     lua_src,
-    c_args: lua_cflags + lua_dll_cflags,
+    c_args: lua_cflags,
     dependencies: lua_deps,
     link_with: liblua,
     install: true,
@@ -30,7 +32,7 @@ luac = executable('luac',
     luac_src,
     c_args: lua_cflags,
     dependencies: lua_deps,
-    link_with: liblua.get_static_lib(),
+    link_with: liblua_static,
     install: true,
 )
 
