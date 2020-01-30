@@ -14,6 +14,7 @@ luac_src = ['luac.c', 'print.c']
 
 liblua = both_libraries(lua_dll_name,
     lua_core_src + lua_lib_src,
+    dependencies: lua_deps,
     c_args: lua_cflags + lua_dll_cflags,
     name_prefix: lua_dll_prefix,
     install: true,
