@@ -1,6 +1,4 @@
-project('lua', 'c', version: '5.1.5', default_options : ['c_std=c89'])
-
-lua_version_suffix = '51'
+project('lua', 'c', version: '5.4.0-rc2', default_options : ['c_std=gnu99'])
 
 cc = meson.get_compiler('c')
 
@@ -8,19 +6,25 @@ lua_deps = []
 lua_cflags = []
 lua_dll_cflags = []
 
-if host_machine.system() == 'linux'
+lua_dll_name = 'lua'
+lua_dll_prefix = 'lib'
+
+if host_machine.system() == 'windows'
+    lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
+    lua_dll_name = 'lua54'
+    lua_dll_prefix = ''
+elif host_machine.system() == 'linux'
+    lua_cflags += '-DLUA_USE_LINUX'
     readline = cc.find_library('readline')
     if not readline.found()
         error('readline library not found')
+        lua_cflags += '-DLUA_USE_READLINE'
+        lua_deps += readline
     endif
-    lua_deps += readline
-    lua_cflags += '-DLUA_USE_LINUX'
-    lua_dll_name = 'lua'
-    lua_dll_prefix = 'lib'
-elif host_machine.system() == 'windows'
-    lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
-    lua_dll_name = 'lua51'
-    lua_dll_prefix = ''
+elif host_machine.system() == 'sunos'
+   lua_dll_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN', '-D_REENTRANT']
+elif host_machine.system() in ['freebsd', 'openbsd', 'netbsd', 'dragonfly']
+    lua_dll_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN']
 endif
 
 lua_deps += cc.find_library('m', required : false)
@@ -31,7 +35,7 @@ install_headers(
     'src/luaconf.h',
     'src/lualib.h',
     'src/lauxlib.h',
-    'etc/lua.hpp',
+    'src/lua.hpp',
 )
 
 subdir('src')
