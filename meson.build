@@ -6,13 +6,13 @@ lua_deps = []
 lua_cflags = []
 lua_dll_cflags = []
 
-lua_dll_name = 'lua'
-lua_dll_prefix = 'lib'
+lua_library_name = 'lua'
+lua_library_prefix = 'lib'
 
 if host_machine.system() == 'windows'
     lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
-    lua_dll_name = 'lua54'
-    lua_dll_prefix = ''
+    lua_library_name = 'lua54'
+    lua_library_prefix = ''
 elif host_machine.system() == 'linux'
     lua_cflags += '-DLUA_USE_LINUX'
     readline = cc.find_library('readline')
