@@ -17,8 +17,7 @@ luac_src = 'luac.c'
 liblua = library(lua_library_name,
     lua_core_src + lua_lib_src,
     dependencies: lua_deps,
-    c_args: lua_cflags + lua_dll_cflags,
-    name_prefix: lua_library_prefix,
+    c_args: lua_cflags + lua_cflags,
     install: true,
 )
 
