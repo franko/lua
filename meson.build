@@ -12,8 +12,10 @@ lua_cflags = ['-DLUA_COMPAT_5_3']
 lua_library_name = 'lua'
 
 if host_machine.system() == 'windows'
-    lua_cflags += '-DLUA_BUILD_AS_DLL'
-    lua_library_name = 'lua54'
+    if get_option('default_library') != 'static'
+        lua_cflags += '-DLUA_BUILD_AS_DLL'
+        lua_library_name = 'lua54'
+    endif
 elif host_machine.system() == 'linux'
     lua_cflags += '-DLUA_USE_LINUX'
     readline = cc.find_library('readline')
