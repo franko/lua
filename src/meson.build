@@ -14,11 +14,11 @@ lua_lib_src = [
 lua_src = 'lua.c'
 luac_src = 'luac.c'
 
-liblua = both_libraries(lua_dll_name,
+liblua = both_libraries(lua_library_name,
     lua_core_src + lua_lib_src,
     dependencies: lua_deps,
-    c_args: lua_cflags + lua_dll_cflags,
-    name_prefix: lua_dll_prefix,
+    c_args: lua_cflags + lua_shared_cflags,
+    name_prefix: lua_library_prefix,
     install: true,
 )
 liblua_static = liblua.get_static_lib()
