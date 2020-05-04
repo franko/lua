@@ -14,6 +14,17 @@ lua_lib_src = [
 lua_src = 'lua.c'
 luac_src = 'luac.c'
 
+# The strategy is to create both shared and static libraries, adding some
+# specific compiler flags for the shared library below. Then lua is linked
+# to the shared library while luac is linked to the static library.
+#
+# Note that luac needs to be linked to the static library because it does
+# access to some functions that are private like luaG_getfuncline and others.
+#
+# Note also that at least for Lua 5.4 on linux the default is to use only the
+# static library but this is not respected here, we do both libraries for all
+# targets.
+#
 liblua = both_libraries(lua_library_name,
     lua_core_src + lua_lib_src,
     dependencies: lua_deps,
