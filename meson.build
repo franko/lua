@@ -1,4 +1,4 @@
-project('lua', 'c', version: '5.4.0-rc2',
+project('lua', 'c', version: '5.4.0-rc4',
     default_options : [
         'c_std=gnu99',
         'default_library=static'
