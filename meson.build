@@ -22,19 +22,21 @@ if host_machine.system() == 'windows'
         lua_cflags += '-DLUA_BUILD_AS_DLL'
         lua_library_name = 'lua52'
     endif
-elif host_machine.system() == 'linux'
-    lua_cflags += '-DLUA_USE_LINUX'
-    readline = cc.find_library('readline')
-    if not readline.found()
-        error('readline library not found')
+elif host_machine.system() in ['linux', 'freebsd']
+    readline = cc.find_library('readline', required: false)
+    if readline.found() and get_option('use_readline')
+        lua_cflags += '-DLUA_USE_LINUX'
+        lua_deps += readline
+    else
+        # enable all Linux flags ecept LUA_USE_READLINE
+        lua_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN', '-DLUA_USE_STRTODHEX', '-DLUA_USE_AFORMAT', '-DLUA_USE_LONGLONG']
     endif
-    lua_deps += readline
 elif host_machine.system() == 'sunos'
    lua_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN', '-D_REENTRANT']
 elif host_machine.system() == 'darwin'
     lua_cflags += ['-DLUA_USE_MACOSX']
-elif host_machine.system() in ['freebsd', 'openbsd', 'netbsd', 'dragonfly']
-    lua_cflags += ['-DLUA_USE_LINUX']
+elif host_machine.system() in ['openbsd', 'netbsd', 'dragonfly']
+    lua_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN']
 endif
 
 lua_deps += cc.find_library('m', required : false)
