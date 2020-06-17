@@ -38,7 +38,7 @@ luac = executable('luac',
 pkg = import('pkgconfig')
 
 pkg.generate(liblua,
-    filebase : 'lua',
-    name : 'lua',
+    filebase : 'lua5.2',
+    name : 'lua5.2',
     description : 'Lua 5.2 library',
 )
