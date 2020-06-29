@@ -35,6 +35,14 @@ luac = executable('luac',
     install: true,
 )
 
+lua_include_dir = include_directories('.')
+
+lua_dep = declare_dependency(
+    dependencies : lua_deps,
+    include_directories : lua_include_dir,
+    link_with : liblua,
+)
+
 pkg = import('pkgconfig')
 
 pkg.generate(liblua,
