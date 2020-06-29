@@ -34,7 +34,14 @@ elif host_machine.system() in ['linux', 'freebsd']
 elif host_machine.system() == 'sunos'
    lua_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN', '-D_REENTRANT']
 elif host_machine.system() == 'darwin'
-    lua_cflags += ['-DLUA_USE_MACOSX']
+    readline = cc.find_library('readline', required: false)
+    if readline.found() and get_option('use_readline')
+        lua_cflags += '-DLUA_USE_MACOSX'
+        lua_deps += readline
+    else
+        # enable all flags except LUA_USE_READLINE. Actually the same of Linux.
+        lua_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN', '-DLUA_USE_STRTODHEX', '-DLUA_USE_AFORMAT', '-DLUA_USE_LONGLONG']
+    endif
 elif host_machine.system() in ['openbsd', 'netbsd', 'dragonfly']
     lua_cflags += ['-DLUA_USE_POSIX', '-DLUA_USE_DLOPEN']
 endif
