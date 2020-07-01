@@ -1,0 +1,2 @@
+option('use_readline', type : 'boolean', value : false, description: 'Use readline library')
+
