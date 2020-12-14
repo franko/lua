@@ -1,2 +1,2 @@
 option('use_readline', type : 'boolean', value : false, description: 'Use readline library')
-
+option('shared', type: 'feature', value : 'enabled', description: 'Build the shared library')

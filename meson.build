@@ -14,14 +14,14 @@ cc = meson.get_compiler('c')
 
 lua_deps = []
 lua_cflags = ['-DLUA_COMPAT_ALL']
-
+lua_shared_cflags = []
 lua_library_name = 'lua'
+lua_library_prefix = 'lib'
 
 if host_machine.system() == 'windows'
-    if get_option('default_library') != 'static'
-        lua_cflags += '-DLUA_BUILD_AS_DLL'
-        lua_library_name = 'lua52'
-    endif
+    lua_shared_cflags += '-DLUA_BUILD_AS_DLL'
+    lua_library_name = 'lua52'
+    lua_library_prefix = ''
 elif host_machine.system() in ['linux', 'freebsd']
     readline = cc.find_library('readline', required: false)
     if readline.found() and get_option('use_readline')
