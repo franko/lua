@@ -10,15 +10,7 @@ lua_lib_src = [
 lua_src = 'lua.c'
 luac_src = 'luac.c'
 
-if get_option('shared').disabled()
-    liblua = static_library(lua_library_name,
-        lua_core_src + lua_lib_src,
-        dependencies: lua_deps,
-        c_args: lua_cflags,
-        install: true,
-    )
-    liblua_static = liblua
-else
+if get_option('shared')
     liblua = both_libraries(lua_library_name,
         lua_core_src + lua_lib_src,
         dependencies: lua_deps,
@@ -27,25 +19,35 @@ else
         install: true,
     )
     liblua_static = liblua.get_static_lib()
+else
+    liblua = static_library(lua_library_name,
+        lua_core_src + lua_lib_src,
+        dependencies: lua_deps,
+        c_args: lua_cflags,
+        install: true,
+    )
+    liblua_static = liblua
 endif
 
-lua = executable('lua',
-    lua_src,
-    c_args: lua_cflags,
-    dependencies: lua_deps,
-    link_with: liblua,
-    export_dynamic: true,
-    install: true,
-)
+if get_option('app')
+    lua = executable('lua',
+        lua_src,
+        c_args: lua_cflags,
+        dependencies: lua_deps,
+        link_with: liblua,
+        export_dynamic: true,
+        install: true,
+    )
 
-luac = executable('luac',
-    luac_src,
-    c_args: lua_cflags,
-    dependencies: lua_deps,
-    link_with: liblua_static,
-    export_dynamic: true,
-    install: true,
-)
+    luac = executable('luac',
+        luac_src,
+        c_args: lua_cflags,
+        dependencies: lua_deps,
+        link_with: liblua_static,
+        export_dynamic: true,
+        install: true,
+    )
+endif
 
 lua_include_dir = include_directories('.')
 
