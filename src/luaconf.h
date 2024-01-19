@@ -782,5 +782,15 @@
 
 
 
+#if defined(lua_c) || defined(luac_c) || (defined(LUA_LIB) && \
+    (defined(lauxlib_c) || defined(liolib_c) || \
+     defined(loadlib_c) || defined(loslib_c)))
+#include "utf8_wrappers.h"
+#endif
+
+
+
+
+
 #endif
 

@@ -1,7 +1,7 @@
 lua_core_src = [
     'lapi.c', 'lcode.c','lctype.c','ldebug.c','ldo.c','ldump.c','lfunc.c',
     'lgc.c','llex.c','lmem.c','lobject.c','lopcodes.c','lparser.c','lstate.c',
-    'lstring.c','ltable.c','ltm.c','lundump.c','lvm.c','lzio.c'
+    'lstring.c','ltable.c','ltm.c','lundump.c','lvm.c','lzio.c', 'utf8_wrappers.c',
 ]
 lua_lib_src = [
     'lauxlib.c','lbaselib.c','lcorolib.c','ldblib.c','liolib.c','lmathlib.c',
