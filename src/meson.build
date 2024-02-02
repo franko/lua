@@ -24,7 +24,7 @@ liblua_static = liblua.get_static_lib()
 lua = executable('lua',
     lua_src,
     c_args: lua_cflags,
-    dependencies: lua_deps,
+    dependencies: lua_deps + lua_cmd_deps,
     link_with: liblua,
     install: true,
 )
@@ -32,7 +32,7 @@ lua = executable('lua',
 luac = executable('luac',
     luac_src,
     c_args: lua_cflags,
-    dependencies: lua_deps,
+    dependencies: lua_deps + lua_cmd_deps,
     link_with: liblua_static,
     install: true,
 )
