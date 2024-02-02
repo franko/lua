@@ -1,0 +1,3 @@
+option('shared', type : 'boolean', value : true, description: 'Build shared library')
+option('build-commands', type : 'boolean', value : true, description: 'Build lua and luac commands')
+
