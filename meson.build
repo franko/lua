@@ -7,7 +7,7 @@ cc = meson.get_compiler('c')
 lua_deps = []
 lua_cmd_deps = []
 lua_cflags = []
-lua_dll_cflags = []
+lua_shared_cflags = []
 
 if host_machine.system() == 'linux'
     readline = cc.find_library('readline')
@@ -16,21 +16,21 @@ if host_machine.system() == 'linux'
     endif
     lua_cmd_deps += readline
     lua_cflags += '-DLUA_USE_LINUX'
-    lua_dll_name = 'lua'
-    lua_dll_prefix = 'lib'
+    lua_library_name = 'lua'
+    lua_shared_prefix = 'lib'
 elif host_machine.system() == 'darwin'
     readline = cc.find_library('readline', required: false)
     lua_cmd_deps += readline
     lua_cflags += '-DLUA_USE_LINUX'
-    lua_dll_name = 'lua'
-    lua_dll_prefix = 'lib'
+    lua_library_name = 'lua'
+    lua_shared_prefix = 'lib'
 elif host_machine.system() == 'windows'
-    lua_dll_cflags += '-DLUA_BUILD_AS_DLL'
-    lua_dll_name = 'lua51'
-    lua_dll_prefix = ''
+    lua_shared_cflags += '-DLUA_BUILD_AS_DLL'
+    lua_library_name = 'lua51'
+    lua_shared_prefix = ''
 else
-    lua_dll_name = 'lua'
-    lua_dll_prefix = 'lib'
+    lua_library_name = 'lua'
+    lua_shared_prefix = 'lib'
 endif
 
 lua_deps += cc.find_library('m', required : false)
